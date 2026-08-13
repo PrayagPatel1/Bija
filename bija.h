@@ -1090,6 +1090,7 @@ Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec)
 {
     Vec3D_f result = {0};
     mat_mul_internal(mat.elems, vec.elems, result.elems, 3);
+    return result;
 }
 Mat3_f mat3df_transpose(Mat3_f mat)
 {
@@ -1097,7 +1098,6 @@ Mat3_f mat3df_transpose(Mat3_f mat)
     mat_transpose_internal(mat.elems, result.elems, 2);
     return result;
 }
-
 float mat2df_det(Mat2_f mat)
 {
     return mat_det_internal(mat.elems, 2);
