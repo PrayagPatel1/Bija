@@ -108,13 +108,13 @@ extern "C"
 
     typedef struct
     {
-        float elems[2][2];
+        float elems[4];
     } Mat2_f;
     static_assert(sizeof(Mat2_f) == sizeof(float) * 4, "Mat2_f has unexpected padding bytes");
 
     typedef struct
     {
-        float elems[3][3];
+        float elems[9];
     } Mat3_f;
     static_assert(sizeof(Mat3_f) == sizeof(float) * 9, "Mat3_f has unexpected padding bytes");
 
@@ -136,57 +136,57 @@ extern "C"
     BIJA_STATIC_INLINE Vec3D_f vec3df_hadamard_div(Vec3D_f vec1, Vec3D_f vec2);
     BIJA_STATIC_INLINE Vec3D_f vec3df_negate(Vec3D_f vec);
 
-    Vec4D_f vec4df_add(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_sub(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_scale(Vec4D_f vec, float scalar);
-    float vec4df_dot(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_hadamard_prod(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_hadamard_div(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_negate(Vec4D_f vec);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_add(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_sub(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_scale(Vec4D_f vec, float scalar);
+    BIJA_STATIC_INLINE float vec4df_dot(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_hadamard_prod(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_hadamard_div(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_negate(Vec4D_f vec);
 
-    float vec2df_mag(Vec2D_f vec);
-    float vec2df_dist(Vec2D_f vec1, Vec2D_f vec2);
-    float vec2df_angle(Vec2D_f vec1, Vec2D_f vec2);
-    float vec2df_cross(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE float vec2df_mag(Vec2D_f vec);
+    BIJA_STATIC_INLINE float vec2df_dist(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE float vec2df_angle(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE float vec2df_cross(Vec2D_f vec1, Vec2D_f vec2);
 
-    float vec3df_mag(Vec3D_f vec);
-    float vec3df_dist(Vec3D_f vec1, Vec3D_f vec2);
-    float vec3df_angle(Vec3D_f vec1, Vec3D_f vec2);
-    Vec3D_f vec3df_cross(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE float vec3df_mag(Vec3D_f vec);
+    BIJA_STATIC_INLINE float vec3df_dist(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE float vec3df_angle(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_cross(Vec3D_f vec1, Vec3D_f vec2);
 
-    float vec4df_mag(Vec4D_f vec);
-    float vec4df_dist(Vec4D_f vec1, Vec4D_f vec2);
-    float vec4df_angle(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE float vec4df_mag(Vec4D_f vec);
+    BIJA_STATIC_INLINE float vec4df_dist(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE float vec4df_angle(Vec4D_f vec1, Vec4D_f vec2);
 
-    Vec2D_f vec2df_floor(Vec2D_f vec);
-    Vec2D_f vec2df_ceil(Vec2D_f vec);
-    Vec2D_f vec2df_max(Vec2D_f vec1, Vec2D_f vec2);
-    Vec2D_f vec2df_min(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_floor(Vec2D_f vec);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_ceil(Vec2D_f vec);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_max(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_min(Vec2D_f vec1, Vec2D_f vec2);
 
-    Vec3D_f vec3df_floor(Vec3D_f vec);
-    Vec3D_f vec3df_ceil(Vec3D_f vec);
-    Vec3D_f vec3df_max(Vec3D_f vec1, Vec3D_f vec2);
-    Vec3D_f vec3df_min(Vec3D_f vec, Vec3D_f vec2);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_floor(Vec3D_f vec);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_ceil(Vec3D_f vec);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_max(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_min(Vec3D_f vec, Vec3D_f vec2);
 
-    Vec4D_f vec4df_floor(Vec4D_f vec);
-    Vec4D_f vec4df_ceil(Vec4D_f vec);
-    Vec4D_f vec4df_max(Vec4D_f vec1, Vec4D_f vec2);
-    Vec4D_f vec4df_min(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_floor(Vec4D_f vec);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_ceil(Vec4D_f vec);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_max(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_min(Vec4D_f vec1, Vec4D_f vec2);
 
-    Vec2D_f vec2df_norm(Vec2D_f vec);
-    Vec2D_f vec2df_proj(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_norm(Vec2D_f vec);
+    BIJA_STATIC_INLINE Vec2D_f vec2df_proj(Vec2D_f vec1, Vec2D_f vec2);
 
-    Vec3D_f vec3df_norm(Vec3D_f vec);
-    Vec3D_f vec3df_proj(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_norm(Vec3D_f vec);
+    BIJA_STATIC_INLINE Vec3D_f vec3df_proj(Vec3D_f vec1, Vec3D_f vec2);
 
-    Vec4D_f vec4df_norm(Vec4D_f vec);
-    Vec4D_f vec4df_proj(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_norm(Vec4D_f vec);
+    BIJA_STATIC_INLINE Vec4D_f vec4df_proj(Vec4D_f vec1, Vec4D_f vec2);
 
-    int vec2df_equal(Vec2D_f vec1, Vec2D_f vec2);
+    BIJA_STATIC_INLINE int vec2df_equal(Vec2D_f vec1, Vec2D_f vec2);
 
-    int vec3df_equal(Vec3D_f vec1, Vec3D_f vec2);
+    BIJA_STATIC_INLINE int vec3df_equal(Vec3D_f vec1, Vec3D_f vec2);
 
-    int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2);
+    BIJA_STATIC_INLINE int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2);
 
     /* ==== Layer 4: Matrix Operations ==== */
     Mat2_f mat2df_get_identity(void);
@@ -200,7 +200,7 @@ extern "C"
     Mat3_f mat3df_get_rotation_x(float rad);
     Mat3_f mat3df_get_rotation_y(float rad);
     Mat3_f mat3df_get_rotation_z(float rad);
-    Mat3_f mat3df_get_scaling(float sx, float sy);
+    Mat3_f mat3df_get_scaling(float sx, float sy, float sz);
     Mat3_f mat3df_get_reflec_xy(void);
     Mat3_f mat3df_get_reflec_yz(void);
     Mat3_f mat3df_get_reflec_xz(void);
@@ -408,7 +408,7 @@ BIJA_STATIC_INLINE void mat_transpose_internal(const float *mat, float *out, con
     }
 }
 
-void mat_get_submat(const float *mat, float *out, const int row_exclude, const int col_exclude, const size_t dim)
+void mat_get_submat(const float *mat, float *out, const size_t row_exclude, const size_t col_exclude, const size_t dim)
 {
     int sub_col, sub_row = 0;
     for (size_t y = 0; y < dim; y++)
@@ -815,45 +815,46 @@ Mat2_f mat2df_get_identity(void)
 Mat2_f mat2df_get_rotation(float rad)
 {
     Mat2_f result = {0};
-    result.elems[0][0] = cosf(rad);
-    result.elems[0][1] = -sinf(rad);
-    result.elems[1][0] = sinf(rad);
-    result.elems[1][1] = cosf(rad);
+    result.elems[0] = cosf(rad);
+    result.elems[1] = -sinf(rad);
+    result.elems[2] = sinf(rad);
+    result.elems[3] = cosf(rad);
+    return result;
 }
 Mat2_f mat2df_get_scaling(float sx, float sy)
 {
     Mat2_f result = {0};
-    result.elems[0][0] = sx;
-    result.elems[0][1] = 0.0f;
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = sy;
+    result.elems[0] = sx;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = sy;
     return result;
 }
 Mat2_f mat2df_get_reflec_x(void)
 {
     Mat2_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = -1.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = -1.0f;
     return result;
 }
 Mat2_f mat2df_get_reflec_y(void)
 {
     Mat2_f result = {0};
-    result.elems[0][0] = -1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
+    result.elems[0] = -1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 1.0f;
     return result;
 }
 Mat2_f mat2df_get_shear(float x, float y)
 {
     Mat2_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = x;
-    result.elems[1][0] = y;
-    result.elems[1][1] = 1.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = x;
+    result.elems[2] = y;
+    result.elems[3] = 1.0f;
     return result;
 }
 
@@ -866,295 +867,276 @@ Mat3_f mat3df_get_identity(void)
 Mat3_f mat3df_get_rotation_x(float rad)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = cosf(rad);
-    result.elems[1][2] = -sinf(rad);
+    result.elems[3] = 0.0f;
+    result.elems[4] = cosf(rad);
+    result.elems[5] = -sinf(rad);
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = sinf(rad);
-    result.elems[2][2] = cosf(rad);
+    result.elems[6] = 0.0f;
+    result.elems[7] = sinf(rad);
+    result.elems[8] = cosf(rad);
     return result;
 }
 Mat3_f mat3df_get_rotation_y(float rad)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = cosf(rad);
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = sinf(rad);
+    result.elems[0] = cosf(rad);
+    result.elems[1] = 0.0f;
+    result.elems[2] = sinf(rad);
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = -sinf(rad);
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = cosf(rad);
+    result.elems[6] = -sinf(rad);
+    result.elems[7] = 0.0f;
+    result.elems[8] = cosf(rad);
     return result;
 }
 Mat3_f mat3df_get_rotation_z(float rad)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = cosf(rad);
-    result.elems[0][1] = -sinf(rad);
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = cosf(rad);
+    result.elems[1] = -sinf(rad);
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = sinf(rad);
-    result.elems[1][1] = cosf(rad);
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = sinf(rad);
+    result.elems[4] = cosf(rad);
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_scaling(float sx, float sy) {}
+Mat3_f mat3df_get_scaling(float sx, float sy, float sz)
+{
+    Mat3_f result = {0};
+    result.elems[0] = sx;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+
+    result.elems[0] = 0.0f;
+    result.elems[0] = sy;
+    result.elems[0] = 0.0f;
+
+    result.elems[0] = 0.0f;
+    result.elems[0] = 0.0f;
+    result.elems[0] = sz;
+    return result;
+}
 Mat3_f mat3df_get_reflec_xy(void)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0;
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = 1.0;
+    result.elems[1] = 0.0f;
+    result.elems[3] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = -1.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = 0.0f;
+    result.elems[9] = -1.0f;
     return result;
 }
 Mat3_f mat3df_get_reflec_yz(void)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = -1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = -1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = 1.0f;
     return result;
 }
 Mat3_f mat3df_get_reflec_xz(void)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = -1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = -1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = 1.0f;
     return result;
 }
 Mat3_f mat3df_get_shear_x(float xy, float xz)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = xy;
-    result.elems[0][2] = xz;
+    result.elems[0] = 1.0f;
+    result.elems[1] = xy;
+    result.elems[2] = xz;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = 0.0f;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = 1.0f;
     return result;
 }
 Mat3_f mat3df_get_shear_y(float yx, float yz)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = yx;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = yx;
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = 0.0f;
-    result.elems[2][1] = yz;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = yz;
+    result.elems[8] = 1.0f;
     return result;
 }
 Mat3_f mat3df_get_shear_z(float zx, float zy)
 {
     Mat3_f result = {0};
-    result.elems[0][0] = 1.0f;
-    result.elems[0][1] = 0.0f;
-    result.elems[0][2] = 0.0f;
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
 
-    result.elems[1][0] = 0.0f;
-    result.elems[1][1] = 1.0f;
-    result.elems[1][2] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[2][0] = zx;
-    result.elems[2][1] = zy;
-    result.elems[2][2] = 1.0f;
+    result.elems[6] = zx;
+    result.elems[7] = zy;
+    result.elems[8] = 1.0f;
     return result;
 }
 
 Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems;
-    mat_add_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_add_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems;
-    mat_sub_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_sub_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Mat2_f mat2df_scale(Mat2_f mat, float scalar)
 {
     Mat2_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_scale_internal(flat_mat, scalar, flat_result, 2);
+    mat_scale_internal(mat.elems, scalar, result.elems, 2);
     return result;
 }
 Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_mul_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_mul_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec)
 {
     Vec2D_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    mat_mul_internal(flat_mat, vec.elems, result.elems, 2);
+    mat_mul_internal(mat.elems, vec.elems, result.elems, 2);
     return result;
 }
 Mat2_f mat2df_transpose(Mat2_f mat)
 {
     Mat2_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_transpose_internal(flat_mat, flat_result, 2);
+    mat_transpose_internal(mat.elems, result.elems, 2);
     return result;
 }
 
 Mat3_f mat3df_add(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_add_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_add_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Mat3_f mat3df_sub(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_sub_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_sub_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Mat3_f mat3df_scale(Mat3_f mat, float scalar)
 {
     Mat3_f result = {0};
-    float *flat_mat1 = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_scale_internal(flat_mat1, scalar, flat_result, 2);
+    mat_scale_internal(mat.elems, scalar, result.elems, 2);
     return result;
 }
 Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
-    float *flat_mat1 = &mat1.elems[0][0];
-    float *flat_mat2 = &mat2.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_mul_internal(flat_mat1, flat_mat2, flat_result, 2);
+    mat_mul_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
 Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec)
 {
     Vec3D_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    mat_mul_internal(flat_mat, vec.elems, result.elems, 3);
+    mat_mul_internal(mat.elems, vec.elems, result.elems, 3);
 }
 Mat3_f mat3df_transpose(Mat3_f mat)
 {
     Mat3_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_transpose_internal(flat_mat, flat_result, 2);
+    mat_transpose_internal(mat.elems, result.elems, 2);
     return result;
 }
 
 float mat2df_det(Mat2_f mat)
 {
-    float *flat_mat = &mat.elems[0][0];
-    return mat_det_internal(flat_mat, 2);
+    return mat_det_internal(mat.elems, 2);
 }
 float mat3df_det(Mat3_f mat)
 {
-    float *flat_mat = &mat.elems[0][0];
-    return mat_det_internal(flat_mat, 2);
+    return mat_det_internal(mat.elems, 2);
 }
 
 int mat2df_equal(Mat2_f mat1, Mat2_f mat2)
 {
-    return float_eq_approx(mat1.elems[0][0], mat2.elems[0][0]) &&
-           float_eq_approx(mat1.elems[0][1], mat2.elems[0][1]) &&
-           float_eq_approx(mat1.elems[1][0], mat2.elems[1][0]) &&
-           float_eq_approx(mat1.elems[1][1], mat2.elems[1][1]);
+    return float_eq_approx(mat1.elems[0], mat2.elems[0]) &&
+           float_eq_approx(mat1.elems[1], mat2.elems[1]) &&
+           float_eq_approx(mat1.elems[2], mat2.elems[2]) &&
+           float_eq_approx(mat1.elems[3], mat2.elems[3]);
 }
 int mat3df_equal(Mat3_f mat1, Mat3_f mat2)
 {
-    return float_eq_approx(mat1.elems[0][0], mat2.elems[0][0]) &&
-           float_eq_approx(mat1.elems[0][1], mat2.elems[0][1]) &&
-           float_eq_approx(mat1.elems[0][2], mat2.elems[0][2]) &&
-           float_eq_approx(mat1.elems[1][0], mat2.elems[1][0]) &&
-           float_eq_approx(mat1.elems[1][1], mat2.elems[1][1]) &&
-           float_eq_approx(mat1.elems[1][2], mat2.elems[1][2]) &&
-           float_eq_approx(mat1.elems[2][0], mat2.elems[2][0]) &&
-           float_eq_approx(mat1.elems[2][1], mat2.elems[2][1]) &&
-           float_eq_approx(mat1.elems[2][2], mat2.elems[2][2]);
+    return float_eq_approx(mat1.elems[0], mat2.elems[0]) &&
+           float_eq_approx(mat1.elems[1], mat2.elems[1]) &&
+           float_eq_approx(mat1.elems[2], mat2.elems[2]) &&
+           float_eq_approx(mat1.elems[3], mat2.elems[3]) &&
+           float_eq_approx(mat1.elems[4], mat2.elems[4]) &&
+           float_eq_approx(mat1.elems[5], mat2.elems[5]) &&
+           float_eq_approx(mat1.elems[6], mat2.elems[6]) &&
+           float_eq_approx(mat1.elems[7], mat2.elems[7]) &&
+           float_eq_approx(mat1.elems[8], mat2.elems[8]);
 }
 
 Mat2_f mat2df_inverse(Mat2_f mat)
 {
     Mat2_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_inverse_internal(flat_mat, flat_result, 2);
+    mat_inverse_internal(mat.elems, result.elems, 2);
     return result;
 }
 Mat3_f mat3df_inverse(Mat3_f mat)
 {
     Mat3_f result = {0};
-    float *flat_mat = &mat.elems[0][0];
-    float *flat_result = &result.elems[0][0];
-    mat_inverse_internal(flat_mat, flat_result, 3);
+    mat_inverse_internal(mat.elems, result.elems, 3);
     return result;
 }
 
