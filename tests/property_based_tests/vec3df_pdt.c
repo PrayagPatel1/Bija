@@ -205,10 +205,3 @@ BTEST_REGISTER("Vec3D_f Normal Perserves Direction", prop_norm_preserves_directi
 BTEST_REGISTER("Vec3D_f Min Mac Commutative", prop_min_max_commutative_v3);
 BTEST_REGISTER("Vec3D_f Min Less Than Max", prop_min_le_max_v3);
 BTEST_REGISTER("Vec3D_f Angle is Zero", prop_angle_self_is_zero_v3);
-
-// int main(void)
-// {
-// uint32_t state = 2463538692;
-// btest_pbt_runner(&state);
-// return 0;
-// }

@@ -75,10 +75,3 @@ BTEST_REGISTER("Vec2D_f Triangle Inequality", prop_triangle_inequality_v2);
 BTEST_REGISTER("Vec2D_f Cross Anticommutative", prop_cross_anticommutative_v2);
 BTEST_REGISTER("Vec2D_f Projection Idempotent", prop_proj_idempotent_v2);
 BTEST_REGISTER("Vec2D_f Floor Ceil Bound", prop_floor_ceil_bound_v2);
-
-// int main(void)
-// {
-//     uint32_t state = 2463534242;
-//     btest_pbt_runner(&state);
-//     return 0;
-// }
