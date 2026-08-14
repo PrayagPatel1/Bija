@@ -641,16 +641,14 @@ BIJA_STATIC_INLINE float vec3df_dist(Vec3D_f vec1, Vec3D_f vec2)
 }
 BIJA_STATIC_INLINE float vec3df_angle(Vec3D_f vec1, Vec3D_f vec2)
 {
-    float numerator = vec3df_dot(vec1, vec2);
-    float denominator = vec3df_mag(vec1) * vec3df_mag(vec2);
-    return acosf(numerator / denominator);
+    return atan2f(vec3df_mag(vec3df_cross(vec1, vec2)), vec3df_dot(vec1, vec2));
 }
 BIJA_STATIC_INLINE Vec3D_f vec3df_cross(Vec3D_f vec1, Vec3D_f vec2)
 {
     Vec3D_f result = {0};
-    result.x = vec1.y * vec2.z - vec1.z * vec2.y;
-    result.y = vec1.x * vec2.z - vec1.z * vec2.x;
-    result.z = vec1.x * vec2.y - vec1.y * vec2.x;
+    result.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
+    result.y = -1 * ((vec1.x * vec2.z) - (vec1.z * vec2.x));
+    result.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
     return result;
 }
 

@@ -138,11 +138,12 @@ static inline void btest_pbt_runner(uint32_t *state)
             if (!property->func(state))
             {
                 pbt_failed++;
+                printf("\n");
                 printf("PROPERTY FAILED\n");
                 printf("-----------------------------\n");
                 printf("Name      : %s\n", property->name);
-                printf("Seed      : %ls\n", state);
-                printf("Iteration : %zu\n", property->iterations);
+                printf("Seed      : %d\n", *state);
+                printf("Iteration : %zu\n", iter);
                 printf("-----------------------------\n");
                 return;
             }
