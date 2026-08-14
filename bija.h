@@ -64,6 +64,7 @@ extern "C"
 
     /* ==== Layer 1: Utility Functions ==== */
 #define BIJA_EPSILON 1e-6f
+#define BIJA_PI 3.141592653589793
 
     BIJA_FORCE_INLINE float lerp_f(float a, float b, float t);
     BIJA_FORCE_INLINE float clamp_f(float x, float min, float max);

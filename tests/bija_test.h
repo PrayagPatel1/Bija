@@ -111,14 +111,12 @@ static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iter
 }
 
 #if defined(__GNUC__) || defined(__clang__)
-#define CONCAT_HIDDEN(x, y) x##y
-#define CONCATE(x, y) CONCAT_HIDDEN(x, y)
-// TODO: The BTEST_REGISTER() macro function can easily cause a redefinition error
-//       if the macro is used on the same line.
-#define BTEST_REGISTER(pbt_name, func)                                      \
-    __attribute__((constructor)) void CONCATE(register_pbt, __LINE__)(void) \
-    {                                                                       \
-        btest_register_pbt((pbt_name), &(func), 100);                       \
+#define CONCAT_HIDDEN(x, y, z) x##y##z
+#define CONCATE(x, y, z) CONCAT_HIDDEN(x, y, z)
+#define BTEST_REGISTER(pbt_name, func)                                                   \
+    __attribute__((constructor)) void CONCATE(register_pbt, __COUNTER__, __LINE__)(void) \
+    {                                                                                    \
+        btest_register_pbt((pbt_name), &(func), 100);                                    \
     }
 #else
 #error "Could Not Do Automatic PBT Test Registration. Use btest_register_pbt() manually."
@@ -127,8 +125,7 @@ static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iter
 /* ==== PBT RUNNER ==== */
 static inline void btest_pbt_runner(uint32_t *state)
 {
-    size_t pbt_passed = 0;
-    size_t pbt_failed = 0;
+    size_t runs_cnt = 0;
     for (size_t i = 0; i < count; i++)
     {
         Btest_PropertyTest *property = &registry[i];
@@ -137,7 +134,6 @@ static inline void btest_pbt_runner(uint32_t *state)
         {
             if (!property->func(state))
             {
-                pbt_failed++;
                 printf("\n");
                 printf("PROPERTY FAILED\n");
                 printf("-----------------------------\n");
@@ -147,14 +143,13 @@ static inline void btest_pbt_runner(uint32_t *state)
                 printf("-----------------------------\n");
                 return;
             }
-            pbt_passed++;
+            runs_cnt++;
         }
     }
 
     printf("STATISTICS\n");
     printf("-------------------------------------\n");
-    printf("PASSED : %zu\n", pbt_passed);
-    printf("FAILED : %zu\n", pbt_failed);
+    printf("Number of Runs : %zu\n", runs_cnt);
     printf("-------------------------------------\n");
 }
 #endif // BIJA_TEST_H
