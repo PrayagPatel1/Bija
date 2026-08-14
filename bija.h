@@ -189,47 +189,47 @@ extern "C"
     BIJA_STATIC_INLINE int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2);
 
     /* ==== Layer 4: Matrix Operations ==== */
-    Mat2_f mat2df_get_identity(void);
-    Mat2_f mat2df_get_rotation(float rad);
-    Mat2_f mat2df_get_scaling(float sx, float sy);
-    Mat2_f mat2df_get_reflec_x(void);
-    Mat2_f mat2df_get_reflec_y(void);
-    Mat2_f mat2df_get_shear(float x, float y);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_identity(void);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_rotation(float rad);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_scaling(float sx, float sy);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_reflec_x(void);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_reflec_y(void);
+    BIJA_STATIC_INLINE Mat2_f mat2df_get_shear(float x, float y);
 
-    Mat3_f mat3df_get_identity(void);
-    Mat3_f mat3df_get_rotation_x(float rad);
-    Mat3_f mat3df_get_rotation_y(float rad);
-    Mat3_f mat3df_get_rotation_z(float rad);
-    Mat3_f mat3df_get_scaling(float sx, float sy, float sz);
-    Mat3_f mat3df_get_reflec_xy(void);
-    Mat3_f mat3df_get_reflec_yz(void);
-    Mat3_f mat3df_get_reflec_xz(void);
-    Mat3_f mat3df_get_shear_x(float xy, float xz);
-    Mat3_f mat3df_get_shear_y(float yx, float yz);
-    Mat3_f mat3df_get_shear_z(float zx, float zy);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_identity(void);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_x(float rad);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_y(float rad);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_z(float rad);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_scaling(float sx, float sy, float sz);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xy(void);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_yz(void);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xz(void);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_x(float xy, float xz);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_y(float yx, float yz);
+    BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_z(float zx, float zy);
 
-    Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2);
-    Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2);
-    Mat2_f mat2df_scale(Mat2_f mat, float scalar);
-    Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2);
-    Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec);
-    Mat2_f mat2df_transpose(Mat2_f mat);
+    BIJA_STATIC_INLINE Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2);
+    BIJA_STATIC_INLINE Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2);
+    BIJA_STATIC_INLINE Mat2_f mat2df_scale(Mat2_f mat, float scalar);
+    BIJA_STATIC_INLINE Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2);
+    BIJA_STATIC_INLINE Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec);
+    BIJA_STATIC_INLINE Mat2_f mat2df_transpose(Mat2_f mat);
 
-    Mat3_f mat3df_add(Mat3_f mat1, Mat3_f mat2);
-    Mat3_f mat3df_sub(Mat3_f mat1, Mat3_f mat2);
-    Mat3_f mat3df_scale(Mat3_f mat, float scalar);
-    Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2);
-    Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec);
-    Mat3_f mat3df_transpose(Mat3_f mat);
+    BIJA_STATIC_INLINE Mat3_f mat3df_add(Mat3_f mat1, Mat3_f mat2);
+    BIJA_STATIC_INLINE Mat3_f mat3df_sub(Mat3_f mat1, Mat3_f mat2);
+    BIJA_STATIC_INLINE Mat3_f mat3df_scale(Mat3_f mat, float scalar);
+    BIJA_STATIC_INLINE Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2);
+    BIJA_STATIC_INLINE Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec);
+    BIJA_STATIC_INLINE Mat3_f mat3df_transpose(Mat3_f mat);
 
-    float mat2df_det(Mat2_f mat);
-    float mat3df_det(Mat3_f mat);
+    BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat);
+    BIJA_STATIC_INLINE float mat3df_det(Mat3_f mat);
 
-    int mat2df_equal(Mat2_f mat1, Mat2_f mat2);
-    int mat3df_equal(Mat3_f mat1, Mat3_f mat2);
+    BIJA_STATIC_INLINE int mat2df_equal(Mat2_f mat1, Mat2_f mat2);
+    BIJA_STATIC_INLINE int mat3df_equal(Mat3_f mat1, Mat3_f mat2);
 
-    Mat2_f mat2df_inverse(Mat2_f mat);
-    Mat3_f mat3df_inverse(Mat3_f mat);
+    BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat);
+    BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat);
 
 #ifdef __cplusplus
 }
@@ -408,7 +408,7 @@ BIJA_STATIC_INLINE void mat_transpose_internal(const float *mat, float *out, con
     }
 }
 
-void mat_get_submat(const float *mat, float *out, const size_t row_exclude, const size_t col_exclude, const size_t dim)
+static void mat_get_submat(const float *mat, float *out, const size_t row_exclude, const size_t col_exclude, const size_t dim)
 {
     int sub_col, sub_row = 0;
     for (size_t y = 0; y < dim; y++)
@@ -453,7 +453,7 @@ BIJA_STATIC_INLINE float mat_det_internal(const float *mat, const size_t dim)
     return det;
 }
 
-void mat_get_cofactor(const float *mat, float *out, const size_t dim)
+static void mat_get_cofactor(const float *mat, float *out, const size_t dim)
 {
     if (dim == 2)
     {
@@ -806,13 +806,13 @@ BIJA_STATIC_INLINE int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2)
 
 /* ==== Matrix Operation Implementation ==== */
 
-Mat2_f mat2df_get_identity(void)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_identity(void)
 {
     Mat2_f result = {0};
     mat_identity_internal(result.elems, 2);
     return result;
 }
-Mat2_f mat2df_get_rotation(float rad)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_rotation(float rad)
 {
     Mat2_f result = {0};
     result.elems[0] = cosf(rad);
@@ -821,7 +821,7 @@ Mat2_f mat2df_get_rotation(float rad)
     result.elems[3] = cosf(rad);
     return result;
 }
-Mat2_f mat2df_get_scaling(float sx, float sy)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_scaling(float sx, float sy)
 {
     Mat2_f result = {0};
     result.elems[0] = sx;
@@ -830,7 +830,7 @@ Mat2_f mat2df_get_scaling(float sx, float sy)
     result.elems[3] = sy;
     return result;
 }
-Mat2_f mat2df_get_reflec_x(void)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_reflec_x(void)
 {
     Mat2_f result = {0};
     result.elems[0] = 1.0f;
@@ -839,7 +839,7 @@ Mat2_f mat2df_get_reflec_x(void)
     result.elems[3] = -1.0f;
     return result;
 }
-Mat2_f mat2df_get_reflec_y(void)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_reflec_y(void)
 {
     Mat2_f result = {0};
     result.elems[0] = -1.0f;
@@ -848,7 +848,7 @@ Mat2_f mat2df_get_reflec_y(void)
     result.elems[3] = 1.0f;
     return result;
 }
-Mat2_f mat2df_get_shear(float x, float y)
+BIJA_STATIC_INLINE Mat2_f mat2df_get_shear(float x, float y)
 {
     Mat2_f result = {0};
     result.elems[0] = 1.0f;
@@ -858,13 +858,13 @@ Mat2_f mat2df_get_shear(float x, float y)
     return result;
 }
 
-Mat3_f mat3df_get_identity(void)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_identity(void)
 {
     Mat3_f result = {0};
     mat_identity_internal(result.elems, 3);
     return result;
 }
-Mat3_f mat3df_get_rotation_x(float rad)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_x(float rad)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0f;
@@ -880,7 +880,7 @@ Mat3_f mat3df_get_rotation_x(float rad)
     result.elems[8] = cosf(rad);
     return result;
 }
-Mat3_f mat3df_get_rotation_y(float rad)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_y(float rad)
 {
     Mat3_f result = {0};
     result.elems[0] = cosf(rad);
@@ -896,7 +896,7 @@ Mat3_f mat3df_get_rotation_y(float rad)
     result.elems[8] = cosf(rad);
     return result;
 }
-Mat3_f mat3df_get_rotation_z(float rad)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_rotation_z(float rad)
 {
     Mat3_f result = {0};
     result.elems[0] = cosf(rad);
@@ -912,7 +912,7 @@ Mat3_f mat3df_get_rotation_z(float rad)
     result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_scaling(float sx, float sy, float sz)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_scaling(float sx, float sy, float sz)
 {
     Mat3_f result = {0};
     result.elems[0] = sx;
@@ -928,7 +928,7 @@ Mat3_f mat3df_get_scaling(float sx, float sy, float sz)
     result.elems[0] = sz;
     return result;
 }
-Mat3_f mat3df_get_reflec_xy(void)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xy(void)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0;
@@ -944,7 +944,7 @@ Mat3_f mat3df_get_reflec_xy(void)
     result.elems[9] = -1.0f;
     return result;
 }
-Mat3_f mat3df_get_reflec_yz(void)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_yz(void)
 {
     Mat3_f result = {0};
     result.elems[0] = -1.0f;
@@ -960,7 +960,7 @@ Mat3_f mat3df_get_reflec_yz(void)
     result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_reflec_xz(void)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xz(void)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0f;
@@ -976,7 +976,7 @@ Mat3_f mat3df_get_reflec_xz(void)
     result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_shear_x(float xy, float xz)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_x(float xy, float xz)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0f;
@@ -992,7 +992,7 @@ Mat3_f mat3df_get_shear_x(float xy, float xz)
     result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_shear_y(float yx, float yz)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_y(float yx, float yz)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0f;
@@ -1008,7 +1008,7 @@ Mat3_f mat3df_get_shear_y(float yx, float yz)
     result.elems[8] = 1.0f;
     return result;
 }
-Mat3_f mat3df_get_shear_z(float zx, float zy)
+BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_z(float zx, float zy)
 {
     Mat3_f result = {0};
     result.elems[0] = 1.0f;
@@ -1025,96 +1025,96 @@ Mat3_f mat3df_get_shear_z(float zx, float zy)
     return result;
 }
 
-Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2)
+BIJA_STATIC_INLINE Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
     mat_add_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2)
+BIJA_STATIC_INLINE Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
     mat_sub_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Mat2_f mat2df_scale(Mat2_f mat, float scalar)
+BIJA_STATIC_INLINE Mat2_f mat2df_scale(Mat2_f mat, float scalar)
 {
     Mat2_f result = {0};
     mat_scale_internal(mat.elems, scalar, result.elems, 2);
     return result;
 }
-Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2)
+BIJA_STATIC_INLINE Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
     mat_mul_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec)
+BIJA_STATIC_INLINE Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec)
 {
     Vec2D_f result = {0};
     mat_mul_internal(mat.elems, vec.elems, result.elems, 2);
     return result;
 }
-Mat2_f mat2df_transpose(Mat2_f mat)
+BIJA_STATIC_INLINE Mat2_f mat2df_transpose(Mat2_f mat)
 {
     Mat2_f result = {0};
     mat_transpose_internal(mat.elems, result.elems, 2);
     return result;
 }
 
-Mat3_f mat3df_add(Mat3_f mat1, Mat3_f mat2)
+BIJA_STATIC_INLINE Mat3_f mat3df_add(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
     mat_add_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Mat3_f mat3df_sub(Mat3_f mat1, Mat3_f mat2)
+BIJA_STATIC_INLINE Mat3_f mat3df_sub(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
     mat_sub_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Mat3_f mat3df_scale(Mat3_f mat, float scalar)
+BIJA_STATIC_INLINE Mat3_f mat3df_scale(Mat3_f mat, float scalar)
 {
     Mat3_f result = {0};
     mat_scale_internal(mat.elems, scalar, result.elems, 2);
     return result;
 }
-Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2)
+BIJA_STATIC_INLINE Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
     mat_mul_internal(mat1.elems, mat2.elems, result.elems, 2);
     return result;
 }
-Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec)
+BIJA_STATIC_INLINE Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec)
 {
     Vec3D_f result = {0};
     mat_mul_internal(mat.elems, vec.elems, result.elems, 3);
     return result;
 }
-Mat3_f mat3df_transpose(Mat3_f mat)
+BIJA_STATIC_INLINE Mat3_f mat3df_transpose(Mat3_f mat)
 {
     Mat3_f result = {0};
     mat_transpose_internal(mat.elems, result.elems, 2);
     return result;
 }
-float mat2df_det(Mat2_f mat)
+BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat)
 {
     return mat_det_internal(mat.elems, 2);
 }
-float mat3df_det(Mat3_f mat)
+BIJA_STATIC_INLINE float mat3df_det(Mat3_f mat)
 {
     return mat_det_internal(mat.elems, 2);
 }
 
-int mat2df_equal(Mat2_f mat1, Mat2_f mat2)
+BIJA_STATIC_INLINE int mat2df_equal(Mat2_f mat1, Mat2_f mat2)
 {
     return float_eq_approx(mat1.elems[0], mat2.elems[0]) &&
            float_eq_approx(mat1.elems[1], mat2.elems[1]) &&
            float_eq_approx(mat1.elems[2], mat2.elems[2]) &&
            float_eq_approx(mat1.elems[3], mat2.elems[3]);
 }
-int mat3df_equal(Mat3_f mat1, Mat3_f mat2)
+BIJA_STATIC_INLINE int mat3df_equal(Mat3_f mat1, Mat3_f mat2)
 {
     return float_eq_approx(mat1.elems[0], mat2.elems[0]) &&
            float_eq_approx(mat1.elems[1], mat2.elems[1]) &&
@@ -1127,13 +1127,13 @@ int mat3df_equal(Mat3_f mat1, Mat3_f mat2)
            float_eq_approx(mat1.elems[8], mat2.elems[8]);
 }
 
-Mat2_f mat2df_inverse(Mat2_f mat)
+BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat)
 {
     Mat2_f result = {0};
     mat_inverse_internal(mat.elems, result.elems, 2);
     return result;
 }
-Mat3_f mat3df_inverse(Mat3_f mat)
+BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat)
 {
     Mat3_f result = {0};
     mat_inverse_internal(mat.elems, result.elems, 3);
