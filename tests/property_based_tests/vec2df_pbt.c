@@ -66,47 +66,19 @@ static bool prop_floor_ceil_bound_v2(uint32_t *state)
            a.y <= c.y + BIJA_EPSILON;
 }
 
+BTEST_REGISTER("Vec2D_f Addition Comutatively", prop_add_commutative_v2);
+BTEST_REGISTER("Vec2D_f Addition Associativity", prop_add_associative_v2);
+BTEST_REGISTER("Vec2D_f Subtraction Is Addition Negate", prop_sub_is_add_negate_v2);
+BTEST_REGISTER("Vec2D_f Scale Distributes Over Addition", prop_scale_distributes_over_vecadd_v2);
+BTEST_REGISTER("Vec2D_f Scale Identity", prop_scale_identity_v2);
+BTEST_REGISTER("Vec2D_f Triangle Inequality", prop_triangle_inequality_v2);
+BTEST_REGISTER("Vec2D_f Cross Anticommutative", prop_cross_anticommutative_v2);
+BTEST_REGISTER("Vec2D_f Projection Idempotent", prop_proj_idempotent_v2);
+BTEST_REGISTER("Vec2D_f Floor Ceil Bound", prop_floor_ceil_bound_v2);
+
 int main(void)
 {
     uint32_t state = 2463534242;
-    Btest_PropertyTest registry[] = {
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Add Commutativity",
-            .func = &prop_add_commutative_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Add Associativity",
-            .func = &prop_add_associative_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Sub and Add Negate",
-            .func = &prop_sub_is_add_negate_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Scale Distribution Over Add",
-            .func = &prop_scale_distributes_over_vecadd_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2d_f Scale Identity",
-            .func = &prop_scale_identity_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Triangle Inequality",
-            .func = &prop_triangle_inequality_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Cross Anticommutative",
-            .func = &prop_cross_anticommutative_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Projection Idempotent",
-            .func = &prop_proj_idempotent_v2,
-            .iterations = 100},
-        (Btest_PropertyTest){
-            .name = "Vec2D_f Floor Ceil Bound",
-            .func = &prop_floor_ceil_bound_v2,
-            .iterations = 100}};
-
-    btest_pbt_runner(&state, registry, sizeof(registry) / sizeof(registry[0]));
+    btest_pbt_runner(&state);
     return 0;
 }

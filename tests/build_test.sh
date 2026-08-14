@@ -1,4 +1,5 @@
 #!/bin/bash
 
 set -xe 
-gcc -Wall -Wextra property_based_tests/vec2df_pbt.c -o vec2df_pbt_test -lm 
+
+gcc -Wall -Wextra -g -fsanitize=address property_based_tests/vec2df_pbt.c -o test_runner -lm 

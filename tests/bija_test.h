@@ -12,10 +12,14 @@
 #define BIJA_TEST_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
 
 #include "../bija.h"
+
+#define REGISTRY_CAP 100
+#define REGISTRY_ITER 100
 
 /* ==== Random Number (XORSHIFT32), Random Vec, and Random Mat Generators ==== */
 static inline uint32_t btest_xorshift32(uint32_t *state)
@@ -26,7 +30,6 @@ static inline uint32_t btest_xorshift32(uint32_t *state)
     x ^= x << 5;
     return *state = x;
 }
-
 float btest_randfloat(uint32_t *state)
 {
     uint32_t rand_num = btest_xorshift32(state);
@@ -73,8 +76,9 @@ static inline Mat3_f btest_random_mat3f(uint32_t *state)
             btest_randfloat(state), btest_randfloat(state), btest_randfloat(state)}};
 }
 
-/* ==== Property Based Test Runner ==== */
+/* ==== PBT Registration ==== */
 typedef bool (*PropertyFunc)(uint32_t *state);
+
 typedef struct
 {
     char *name;
@@ -82,11 +86,48 @@ typedef struct
     size_t iterations;
 } Btest_PropertyTest;
 
-void btest_pbt_runner(uint32_t *state, Btest_PropertyTest *registry, size_t registry_cnt)
+Btest_PropertyTest *registry = NULL; // Dynamically Allocated
+size_t count = 0;
+size_t capacity = 0;
+
+static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iterations)
+{
+    if (count >= capacity)
+    {
+        capacity = (capacity == 0) ? REGISTRY_CAP : REGISTRY_CAP * 2;
+        Btest_PropertyTest *temp = realloc(registry, sizeof(Btest_PropertyTest) * capacity);
+        if (temp == NULL)
+        {
+            perror("realloc has failed");
+            exit(EXIT_FAILURE);
+        }
+        registry = temp;
+    }
+
+    registry[count].name = name;
+    registry[count].func = func;
+    registry[count].iterations = iterations;
+    count++;
+}
+
+#if defined(__GNUC__) || defined(__clang__)
+#define CONCAT_HIDDEN(x, y) x##y
+#define CONCATE(x, y) CONCAT_HIDDEN(x, y)
+#define BTEST_REGISTER(pbt_name, func)                                      \
+    __attribute__((constructor)) void CONCATE(register_pbt, __LINE__)(void) \
+    {                                                                       \
+        btest_register_pbt((pbt_name), &(func), 100);                       \
+    }
+#else
+#error "Could Not Do Automatic PBT Test Registration. Use btest_register_pbt() manually."
+#endif
+
+/* ==== PBT RUNNER ==== */
+void btest_pbt_runner(uint32_t *state)
 {
     size_t pbt_passed = 0;
     size_t pbt_failed = 0;
-    for (size_t i = 0; i < registry_cnt; i++)
+    for (size_t i = 0; i < count; i++)
     {
         Btest_PropertyTest *property = &registry[i];
 
