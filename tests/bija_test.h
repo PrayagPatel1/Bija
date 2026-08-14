@@ -30,7 +30,7 @@ static inline uint32_t btest_xorshift32(uint32_t *state)
     x ^= x << 5;
     return *state = x;
 }
-float btest_randfloat(uint32_t *state)
+static inline float btest_randfloat(uint32_t *state)
 {
     uint32_t rand_num = btest_xorshift32(state);
     return (float)rand_num / UINT32_MAX; // Normalizes the rand_num to be in [0, 1]
@@ -86,9 +86,9 @@ typedef struct
     size_t iterations;
 } Btest_PropertyTest;
 
-Btest_PropertyTest *registry = NULL; // Dynamically Allocated
-size_t count = 0;
-size_t capacity = 0;
+extern Btest_PropertyTest *registry; // Dynamically Allocated
+extern size_t count;
+extern size_t capacity;
 
 static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iterations)
 {
@@ -113,6 +113,8 @@ static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iter
 #if defined(__GNUC__) || defined(__clang__)
 #define CONCAT_HIDDEN(x, y) x##y
 #define CONCATE(x, y) CONCAT_HIDDEN(x, y)
+// TODO: The BTEST_REGISTER() macro function can easily cause a redefinition error
+//       if the macro is used on the same line.
 #define BTEST_REGISTER(pbt_name, func)                                      \
     __attribute__((constructor)) void CONCATE(register_pbt, __LINE__)(void) \
     {                                                                       \
@@ -123,7 +125,7 @@ static inline void btest_register_pbt(char *name, PropertyFunc func, size_t iter
 #endif
 
 /* ==== PBT RUNNER ==== */
-void btest_pbt_runner(uint32_t *state)
+static inline void btest_pbt_runner(uint32_t *state)
 {
     size_t pbt_passed = 0;
     size_t pbt_failed = 0;
