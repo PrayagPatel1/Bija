@@ -6,7 +6,8 @@ static bool prop_identity_is_mul_identity(uint32_t *state)
     Mat3_f a = btest_random_mat3f(state);
     Mat3_f id = mat3df_get_identity();
 
-    return mat3df_equal(mat3df_mul(id, a), a) && mat3df_equal(mat3df_mul(a, id), a);
+    return mat3df_equal(mat3df_mul(id, a), a) &&
+           mat3df_equal(mat3df_mul(a, id), a);
 }
 
 static bool prop_add_commutative(uint32_t *state)
@@ -190,6 +191,7 @@ static bool prop_scaling_det_matches_factors(uint32_t *state)
     float sx = btest_randfloat(state);
     float sy = btest_randfloat(state);
     float sz = btest_randfloat(state);
+
     Mat3_f s = mat3df_get_scaling(sx, sy, sz);
     return float_eq_approx(mat3df_det(s), sx * sy * sz);
 }
@@ -199,6 +201,7 @@ static bool prop_scaling_ones_is_identity(uint32_t *state)
     (void)state;
     Mat3_f s = mat3df_get_scaling(1.0f, 1.0f, 1.0f);
     Mat3_f id = mat3df_get_identity();
+
     return mat3df_equal(s, id);
 }
 

@@ -71,6 +71,7 @@ extern "C"
     BIJA_FORCE_INLINE float min_f(float a, float b);
     BIJA_FORCE_INLINE float max_f(float a, float b);
     BIJA_FORCE_INLINE int float_eq_approx(float a, float b);
+    BIJA_FORCE_INLINE int float_eq_rel(float a, float b);
 
     /* ==== Layer 2: Core Vector / Matrix Definitions ==== */
     typedef union
@@ -190,6 +191,9 @@ extern "C"
     BIJA_STATIC_INLINE int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2);
 
     /* ==== Layer 4: Matrix Operations ==== */
+    BIJA_STATIC_INLINE void mat2df_display(Mat2_f mat, const char *label);
+    BIJA_STATIC_INLINE void mat3df_display(Mat3_f mat, const char *label);
+
     BIJA_STATIC_INLINE Mat2_f mat2df_get_identity(void);
     BIJA_STATIC_INLINE Mat2_f mat2df_get_rotation(float rad);
     BIJA_STATIC_INLINE Mat2_f mat2df_get_scaling(float sx, float sy);
@@ -231,7 +235,6 @@ extern "C"
 
     BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat);
     BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat);
-
 #ifdef __cplusplus
 }
 #endif
@@ -241,6 +244,7 @@ extern "C"
 #ifdef BIJA_IMPLEMENTATION
 
 #include <math.h>
+#include <stdbool.h>
 
 /* ==== Layer 1: Ultility Function Implementations ==== */
 BIJA_FORCE_INLINE float lerp_f(float a, float b, float t)
@@ -259,12 +263,15 @@ BIJA_FORCE_INLINE float max_f(float a, float b)
 {
     return (a < b) ? b : a;
 }
+
+// TODO: Figure out how to compare two floats without an overflow / underflow
 BIJA_FORCE_INLINE int float_eq_approx(float a, float b)
 {
-    float diff = a - b;
-    if (diff < 0.0f)
-        diff = -diff;
-    return diff < BIJA_EPSILON;
+    return fabs(a - b) <= 10 * BIJA_EPSILON;
+}
+BIJA_FORCE_INLINE int float_eq_rel(float a, float b)
+{
+    return fabs(a - b) < BIJA_EPSILON + 1e-4 * fmax(fabs(a), fabs(b));
 }
 
 /* ==== Layer 3: Vector Operation Implementations ==== */
@@ -343,12 +350,9 @@ BIJA_STATIC_INLINE void vec_min_internal(const float *x, const float *y, float *
 
 BIJA_STATIC_INLINE void mat_identity_internal(float *out, const size_t dim)
 {
-    for (size_t y = 0; y < dim; y++)
+    for (size_t i = 0; i < dim; i++)
     {
-        for (size_t x = 0; x < dim; x++)
-        {
-            out[y * dim + x] = (x + y % 2 == 0) ? 1.0f : 0.0f;
-        }
+        out[i * dim + i] = 1.0f;
     }
 }
 BIJA_STATIC_INLINE void mat_add_internal(const float *mat1, const float *mat2, float *out, const size_t dim)
@@ -385,16 +389,14 @@ BIJA_STATIC_INLINE void mat_scale_internal(const float *mat, const float scalar,
 }
 BIJA_STATIC_INLINE void mat_mul_internal(const float *mat1, const float *mat2, float *out, const size_t dim)
 {
-    for (size_t y = 0; y < dim; y++)
+    for (size_t y = 0; y < dim; ++y)
     {
-        for (size_t x = 0; x < dim; x++)
+        for (size_t x = 0; x < dim; ++x)
         {
-            float sum = 0.0f;
-            for (size_t i = 0; i < dim; i++)
+            for (size_t i = 0; i < dim; ++i)
             {
-                sum += mat1[x * dim + i] * mat2[i * dim + y];
+                out[y * dim + x] += mat1[y * dim + i] * mat2[i * dim + x];
             }
-            out[y * dim + x] = sum;
         }
     }
 }
@@ -456,38 +458,25 @@ BIJA_STATIC_INLINE float mat_det_internal(const float *mat, const size_t dim)
 
 static void mat_get_cofactor(const float *mat, float *out, const size_t dim)
 {
-    if (dim == 2)
-    {
-        for (size_t y = 0; y < dim; y++)
-        {
-            for (size_t x = 0; x < dim; x++)
-            {
-                out[y * dim + x] = (x + y % 2 == 0) ? mat[(1 - x) * dim + (1 - x)] : mat[y * dim + x] * -1;
-            }
-        }
-        return;
-    }
-
-    float sub_mat[dim * dim];
-    int sign = 1;
+    float sub_mat[(dim - 1) * (dim - 1)];
     for (size_t y = 0; y < dim; y++)
     {
         for (size_t x = 0; x < dim; x++)
         {
             mat_get_submat(mat, sub_mat, y, x, dim);
+            int sign = ((x + y) % 2 == 0) ? 1 : -1;
             out[y * dim + x] = sign * mat_det_internal(sub_mat, dim - 1);
-            sign *= -1;
         }
     }
 }
 BIJA_STATIC_INLINE void mat_inverse_internal(const float *mat, float *out, const size_t dim)
 {
-    assert(sizeof(mat) == dim * dim * sizeof(float));
+    assert(!float_eq_approx(mat_det_internal(mat, dim), 0.0f) && "The determinant can't be zero");
 
     float idet = 1.0f / mat_det_internal(mat, dim);
-    mat_get_cofactor(mat, out, dim);
-    mat_transpose_internal(mat, out, dim);
-
+    float cofactor[dim * dim];
+    mat_get_cofactor(mat, cofactor, dim);
+    mat_transpose_internal(cofactor, out, dim);
     for (size_t i = 0; i < dim * dim; i++)
     {
         out[i] *= idet;
@@ -804,6 +793,30 @@ BIJA_STATIC_INLINE int vec4df_equal(Vec4D_f vec1, Vec4D_f vec2)
 }
 
 /* ==== Matrix Operation Implementation ==== */
+BIJA_STATIC_INLINE void mat2df_display(Mat2_f mat, const char *label)
+{
+    printf("%s\n", label);
+    for (size_t y = 0; y < 2; y++)
+    {
+        for (size_t x = 0; x < 2; x++)
+        {
+            printf("    %f", mat.elems[y * 2 + x]);
+        }
+        printf("\n");
+    }
+}
+BIJA_STATIC_INLINE void mat3df_display(Mat3_f mat, const char *label)
+{
+    printf("%s\n", label);
+    for (size_t y = 0; y < 3; y++)
+    {
+        for (size_t x = 0; x < 3; x++)
+        {
+            printf("    %f", mat.elems[y * 3 + x]);
+        }
+        printf("\n");
+    }
+}
 
 BIJA_STATIC_INLINE Mat2_f mat2df_get_identity(void)
 {
@@ -847,10 +860,11 @@ BIJA_STATIC_INLINE Mat2_f mat2df_get_reflec_y(void)
     result.elems[3] = 1.0f;
     return result;
 }
+// mat2df_get_shear() implementation is based on this article: https://en.wikipedia.org/wiki/Shear_mapping
 BIJA_STATIC_INLINE Mat2_f mat2df_get_shear(float x, float y)
 {
     Mat2_f result = {0};
-    result.elems[0] = 1.0f;
+    result.elems[0] = 1.0f + x * y;
     result.elems[1] = x;
     result.elems[2] = y;
     result.elems[3] = 1.0f;
@@ -918,13 +932,13 @@ BIJA_STATIC_INLINE Mat3_f mat3df_get_scaling(float sx, float sy, float sz)
     result.elems[1] = 0.0f;
     result.elems[2] = 0.0f;
 
-    result.elems[0] = 0.0f;
-    result.elems[0] = sy;
-    result.elems[0] = 0.0f;
+    result.elems[3] = 0.0f;
+    result.elems[4] = sy;
+    result.elems[5] = 0.0f;
 
-    result.elems[0] = 0.0f;
-    result.elems[0] = 0.0f;
-    result.elems[0] = sz;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+    result.elems[8] = sz;
     return result;
 }
 BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xy(void)
@@ -932,15 +946,15 @@ BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_xy(void)
     Mat3_f result = {0};
     result.elems[0] = 1.0;
     result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+
     result.elems[3] = 0.0f;
+    result.elems[4] = 1.0f;
+    result.elems[5] = 0.0f;
 
-    result.elems[4] = 0.0f;
-    result.elems[5] = 1.0f;
     result.elems[6] = 0.0f;
-
     result.elems[7] = 0.0f;
-    result.elems[8] = 0.0f;
-    result.elems[9] = -1.0f;
+    result.elems[8] = -1.0f;
     return result;
 }
 BIJA_STATIC_INLINE Mat3_f mat3df_get_reflec_yz(void)
@@ -1050,8 +1064,21 @@ BIJA_STATIC_INLINE Mat2_f mat2df_mul(Mat2_f mat1, Mat2_f mat2)
 }
 BIJA_STATIC_INLINE Vec2D_f mat2df_vec_mul(Mat2_f mat, Vec2D_f vec)
 {
+    Mat2_f result_mat = {0};
+    Mat2_f vec2mat = {0};
+
+    vec2mat.elems[0] = vec.x;
+    vec2mat.elems[1] = 0.0f;
+
+    vec2mat.elems[2] = vec.y;
+    vec2mat.elems[3] = 0.0f;
+
+    mat_mul_internal(mat.elems, vec2mat.elems, result_mat.elems, 2);
+
     Vec2D_f result = {0};
-    mat_mul_internal(mat.elems, vec.elems, result.elems, 2);
+    result.elems[0] = result_mat.elems[0];
+    result.elems[1] = result_mat.elems[2];
+
     return result;
 }
 BIJA_STATIC_INLINE Mat2_f mat2df_transpose(Mat2_f mat)
@@ -1082,28 +1109,49 @@ BIJA_STATIC_INLINE Mat3_f mat3df_scale(Mat3_f mat, float scalar)
 BIJA_STATIC_INLINE Mat3_f mat3df_mul(Mat3_f mat1, Mat3_f mat2)
 {
     Mat3_f result = {0};
-    mat_mul_internal(mat1.elems, mat2.elems, result.elems, 2);
+    mat_mul_internal(mat1.elems, mat2.elems, result.elems, 3);
     return result;
 }
 BIJA_STATIC_INLINE Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec)
 {
+    Mat3_f result_mat = {0};
+    Mat3_f vec2mat = {0};
+
+    vec2mat.elems[0] = vec.x;
+    vec2mat.elems[1] = 0.0f;
+    vec2mat.elems[2] = 0.0f;
+
+    vec2mat.elems[3] = vec.y;
+    vec2mat.elems[4] = 0.0f;
+    vec2mat.elems[5] = 0.0f;
+
+    vec2mat.elems[6] = vec.z;
+    vec2mat.elems[7] = 0.0f;
+    vec2mat.elems[8] = 0.0f;
+
+    mat_mul_internal(mat.elems, vec2mat.elems, result_mat.elems, 3);
+
     Vec3D_f result = {0};
-    mat_mul_internal(mat.elems, vec.elems, result.elems, 3);
+    result.elems[0] = result_mat.elems[0];
+    result.elems[1] = result_mat.elems[3];
+    result.elems[2] = result_mat.elems[6];
+
     return result;
 }
 BIJA_STATIC_INLINE Mat3_f mat3df_transpose(Mat3_f mat)
 {
     Mat3_f result = {0};
-    mat_transpose_internal(mat.elems, result.elems, 2);
+    mat_transpose_internal(mat.elems, result.elems, 3);
     return result;
 }
+
 BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat)
 {
     return mat_det_internal(mat.elems, 2);
 }
 BIJA_STATIC_INLINE float mat3df_det(Mat3_f mat)
 {
-    return mat_det_internal(mat.elems, 2);
+    return mat_det_internal(mat.elems, 3);
 }
 
 BIJA_STATIC_INLINE int mat2df_equal(Mat2_f mat1, Mat2_f mat2)
@@ -1138,5 +1186,21 @@ BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat)
     mat_inverse_internal(mat.elems, result.elems, 3);
     return result;
 }
-
 #endif // BIJA_IMPLEMENTATION
+
+/* ==== Bija Feature TODO ====*/
+// 1. Implement Quaternions / Rotors.
+// 2. SIMD Implementation.
+// 3. Documentation of every public api functions into a .md file in a /docs/
+//    directory.
+
+/* ==== Bija Bug Fix TODO ====*/
+// 1. Figure out how to properly log pbt tests and benchmarking tests in the
+//    terminal.
+// 2. Look into how to improve float_eq_approx()
+
+/* ==== Bija Testing TODO ====*/
+// 1. Benchmarking
+// 2. Edit the build-test.sh script to put the pbt_runner executable in a /bin/
+//    directory.
+// 3. Create a way to clean /bin/ directories.

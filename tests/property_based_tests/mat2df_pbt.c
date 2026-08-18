@@ -5,8 +5,10 @@ static bool prop_identity_is_mul_identity(uint32_t *state)
 {
     Mat2_f a = btest_random_mat2f(state);
     Mat2_f id = mat2df_get_identity();
+
     Mat2_f left = mat2df_mul(id, a);
     Mat2_f right = mat2df_mul(a, id);
+
     return mat2df_equal(left, a) && mat2df_equal(right, a);
 }
 
@@ -100,7 +102,6 @@ static bool prop_det_invariant_under_transpose(uint32_t *state)
     return float_eq_approx(mat2df_det(mat2df_transpose(a)), mat2df_det(a));
 }
 
-/* (A * B) * C == A * (B * C) */
 static bool prop_mul_associative(uint32_t *state)
 {
     Mat2_f a = btest_random_mat2f(state), b = btest_random_mat2f(state), c = btest_random_mat2f(state);
@@ -129,6 +130,7 @@ static bool prop_vec_mul_identity(uint32_t *state)
 {
     Vec2D_f v = btest_random_vec2df(state);
     Mat2_f id = mat2df_get_identity();
+
     return vec2df_equal(mat2df_vec_mul(id, v), v);
 }
 
@@ -177,9 +179,12 @@ static bool prop_inverse_is_mul_inverse(uint32_t *state)
 {
     Mat2_f a = btest_random_mat2f(state);
     Mat2_f inv = mat2df_inverse(a);
+
     Mat2_f id = mat2df_get_identity();
+
     Mat2_f left = mat2df_mul(a, inv);
     Mat2_f right = mat2df_mul(inv, a);
+
     return mat2df_equal(left, id) && mat2df_equal(right, id);
 }
 
@@ -195,7 +200,8 @@ static bool prop_inverse_det_is_reciprocal(uint32_t *state)
     Mat2_f a = btest_random_mat2f(state);
     float det_a = mat2df_det(a);
     float det_inv = mat2df_det(mat2df_inverse(a));
-    return float_eq_approx(det_inv, 1.0f / det_a);
+
+    return float_eq_rel(det_inv, 1.0f / det_a);
 }
 
 static bool prop_rotation_det_is_one(uint32_t *state)
@@ -311,7 +317,8 @@ static bool prop_shear_det_is_one(uint32_t *state)
     float x = btest_randfloat(state);
     float y = btest_randfloat(state);
     Mat2_f sh = mat2df_get_shear(x, y);
-    return float_eq_approx(mat2df_det(sh), 1.0f);
+
+    return float_eq_rel(mat2df_det(sh), 1.0f);
 }
 
 static bool prop_shear_zero_is_identity(uint32_t *state)

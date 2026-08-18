@@ -30,7 +30,7 @@ EOF
     exit 0
 
 elif [[ "$ACTION" == "test" ]]; then
-    echo -e "${PASS_COL}[INFO]${RESET}Building the test runner. You can find the runner in tests/."
+    echo -e "${PASS_COL}[INFO]${RESET} Building the test runner. You can find the runner in tests/."
     chmod +x ./tests/build_test.sh
     ./tests/build_test.sh
 
