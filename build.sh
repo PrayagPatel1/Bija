@@ -9,6 +9,7 @@
 # [test]
 
 # ANSI Escape Codes for Colored Log Output
+INFO_COL='\033[36m'
 ERROR_COL='\033[0;31m'
 PASS_COL='\033[0;32m'
 RESET='\033[0;0m'
@@ -26,13 +27,19 @@ if [[ "$ACTION" == "--help" ]]; then
    
    ARGUMENT:
         test        Runs the test build script to get a test_runner executable.
+        clean       Removes all executables in Bija's codebase that are located
+                    in /bin/ directories.
 EOF
     exit 0
 
 elif [[ "$ACTION" == "test" ]]; then
-    echo -e "${PASS_COL}[INFO]${RESET} Building the test runner. You can find the runner in tests/."
+    echo -e "${INFO_COL}[INFO]${RESET} Building the test runner. You can find the runner in tests/."
     chmod +x ./tests/build_test.sh
     ./tests/build_test.sh
+
+elif [[ "$ACTION" == "clean" ]]; then
+    echo -e "${INFO_COL}[INFO]${RESET} Removing /bin/ Directories ..."
+    find . -type d -name "bin" -exec rm -rf {} +
 
 else
     echo -e "${ERROR_COL}[ERROR]${RESET}Argument: $ACTION is not supported. Run <./build.sh --help> to see all options avaliable."
