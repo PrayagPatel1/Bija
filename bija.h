@@ -1,14 +1,18 @@
 /*******************************************************************************
  *
  * Bija
- * Linear Algebra Library for C
+ * Linear Algebra Library for C/C++
  *
  * -----------------------------------------------------------------------------
  *
  * Description
  * -----------
  * Bija is a small header file library that implements Mathematical functions
- * for 2D vectors, 3D vectors, 4D vectors, 2x2 matrices, and 3x3 matrices.
+ * for 2D vectors, 3D vectors, 4D vectors, 2x2 matrices, 3x3 matrices, 4 x 4
+ * matrices, and quaternions.
+ *
+ * To use this library in your C/C++ projects, make sure to define
+ * BIJA_IMPLEMENTATION before including this header file.
  *
  * Convention
  * ----------
@@ -17,29 +21,24 @@
  *      for division by zero logic and for zero by zero division logic.
  *    - Comparing two floats will not be done using == and instead by comparing
  *      the difference of two floats with Bija's own EPSILON value.
- *
- * Features
- * --------
- *    //TODO: Create a list of features that Bija implements
- *
- * Public API
- * ----------
- *    //TODO: Create a list of public functions / defintions within this API
+ *    - Every public api functions must be pure functions, accepts a number of
+ *      arguments and then returns a value.
+ *    - Cannot use compound literals to return values from any public functions
+ *      because C++ doesn't have compound literals.
  *
  * Repositiory
  * -----------
- * //TODO: Link the repo here!!!
+ *     https://github.com/PrayagPatel1/Bija.git
  *
  * License
  * -------
- * MIT License.
+ * APACHE 2.0 License.
  * See LICENSE for more details.
  *
  * Copyright (c) 2026 Prayag Patel (PrayagPatel1) <prayagpatel283@gmail.com>
  *
  ******************************************************************************/
 
-// Linear Algebra Public Interface
 #ifndef BIJA_H
 #define BIJA_H
 
@@ -120,8 +119,13 @@ extern "C"
     } Mat3_f;
     static_assert(sizeof(Mat3_f) == sizeof(float) * 9, "Mat3_f has unexpected padding bytes");
 
-    /* ==== Layer 3: Vector Operations ==== */
+    typedef struct
+    {
+        float elems[16];
+    } Mat4_f;
+    static_assert(sizeof(Mat4_f) == sizeof(float) * 16, "Mat4_f has unexpected padding bytes");
 
+    /* ==== Layer 3: Vector Operations ==== */
     BIJA_STATIC_INLINE Vec2D_f vec2df_add(Vec2D_f vec1, Vec2D_f vec2);
     BIJA_STATIC_INLINE Vec2D_f vec2df_sub(Vec2D_f vec1, Vec2D_f vec2);
     BIJA_STATIC_INLINE Vec2D_f vec2df_scale(Vec2D_f vec, float scalar);
@@ -213,6 +217,18 @@ extern "C"
     BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_y(float yx, float yz);
     BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_z(float zx, float zy);
 
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_identity(void);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_x(float rad);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_y(float rad);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_z(float rad);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_scaling(float sx, float sy, float sz);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_xy(void);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_yz(void);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_xz(void);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_x(float xy, float xz);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_y(float yx, float yz);
+    BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_z(float zx, float zy);
+
     BIJA_STATIC_INLINE Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2);
     BIJA_STATIC_INLINE Mat2_f mat2df_sub(Mat2_f mat1, Mat2_f mat2);
     BIJA_STATIC_INLINE Mat2_f mat2df_scale(Mat2_f mat, float scalar);
@@ -227,14 +243,24 @@ extern "C"
     BIJA_STATIC_INLINE Vec3D_f mat3df_vec_mul(Mat3_f mat, Vec3D_f vec);
     BIJA_STATIC_INLINE Mat3_f mat3df_transpose(Mat3_f mat);
 
+    BIJA_STATIC_INLINE Mat4_f mat4df_add(Mat4_f mat1, Mat4_f mat2);
+    BIJA_STATIC_INLINE Mat4_f mat4df_sub(Mat4_f mat1, Mat4_f mat2);
+    BIJA_STATIC_INLINE Mat4_f mat4df_scale(Mat4_f mat, float scalar);
+    BIJA_STATIC_INLINE Mat4_f mat4df_mul(Mat4_f mat1, Mat4_f mat2);
+    BIJA_STATIC_INLINE Vec4D_f mat4df_vec_mul(Mat4_f mat, Vec4D_f vec);
+    BIJA_STATIC_INLINE Mat4_f mat4df_transpose(Mat4_f mat);
+
     BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat);
     BIJA_STATIC_INLINE float mat3df_det(Mat3_f mat);
+    BIJA_STATIC_INLINE float mat4df_det(Mat4_f mat);
 
     BIJA_STATIC_INLINE int mat2df_equal(Mat2_f mat1, Mat2_f mat2);
     BIJA_STATIC_INLINE int mat3df_equal(Mat3_f mat1, Mat3_f mat2);
+    BIJA_STATIC_INLINE int mat4df_equal(Mat4_f mat1, Mat4_f mat2);
 
     BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat);
     BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat);
+    BIJA_STATIC_INLINE Mat4_f mat4df_inverse(Mat4_f mat);
 #ifdef __cplusplus
 }
 #endif
@@ -1038,6 +1064,255 @@ BIJA_STATIC_INLINE Mat3_f mat3df_get_shear_z(float zx, float zy)
     return result;
 }
 
+BIJA_STATIC_INLINE Mat4_f mat4df_get_identity(void)
+{
+    Mat4_f result = {0};
+    mat_identity_internal(result.elems, 4);
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_x(float rad)
+{
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = cosf(rad);
+    result.elems[6] = -sinf(rad);
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = sinf(rad);
+    result.elems[10] = cosf(rad);
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_y(float rad)
+{
+    Mat4_f result = {0};
+    result.elems[0] = cosf(rad);
+    result.elems[1] = 0.0f;
+    result.elems[2] = sinf(rad);
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = -sinf(rad);
+    result.elems[9] = 0.0f;
+    result.elems[10] = cosf(rad);
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_rotation_z(float rad)
+{
+    Mat4_f result = {0};
+    result.elems[0] = cosf(rad);
+    result.elems[1] = -sinf(rad);
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = sinf(rad);
+    result.elems[5] = -cosf(rad);
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_scaling(float sx, float sy, float sz)
+{
+    Mat4_f result = {0};
+    result.elems[0] = sx;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = sy;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = sz;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_xy(void)
+{
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = -1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_yz(void)
+{
+    Mat4_f result = {0};
+    result.elems[0] = -1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_reflec_xz(void)
+{
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = 0.0f;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = -1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_x(float xy, float xz)
+{
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = xy;
+    result.elems[2] = xz;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = 0.0f;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_y(float yx, float yz)
+{
+
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0;
+    result.elems[2] = 0.0;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = yx;
+    result.elems[5] = 1.0f;
+    result.elems[6] = yz;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_get_shear_z(float zx, float zy)
+{
+
+    Mat4_f result = {0};
+    result.elems[0] = 1.0f;
+    result.elems[1] = 0.0f;
+    result.elems[2] = zx;
+    result.elems[3] = 0.0f;
+
+    result.elems[4] = 0.0f;
+    result.elems[5] = 1.0f;
+    result.elems[6] = zy;
+    result.elems[7] = 0.0f;
+
+    result.elems[8] = 0.0f;
+    result.elems[9] = 0.0f;
+    result.elems[10] = 1.0f;
+    result.elems[11] = 0.0f;
+
+    result.elems[12] = 0.0f;
+    result.elems[13] = 0.0f;
+    result.elems[14] = 0.0f;
+    result.elems[15] = 1.0f;
+    return result;
+}
+
 BIJA_STATIC_INLINE Mat2_f mat2df_add(Mat2_f mat1, Mat2_f mat2)
 {
     Mat2_f result = {0};
@@ -1145,6 +1420,68 @@ BIJA_STATIC_INLINE Mat3_f mat3df_transpose(Mat3_f mat)
     return result;
 }
 
+BIJA_STATIC_INLINE Mat4_f mat4df_add(Mat4_f mat1, Mat4_f mat2)
+{
+    Mat4_f result = {0};
+    mat_add_internal(mat1.elems, mat2.elems, result.elems, 4);
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_sub(Mat4_f mat1, Mat4_f mat2)
+{
+    Mat4_f result = {0};
+    mat_sub_internal(mat1.elems, mat2.elems, result.elems, 4);
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_scale(Mat4_f mat, float scalar)
+{
+    Mat4_f result = {0};
+    mat_scale_internal(mat.elems, scalar, result.elems, 4);
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_mul(Mat4_f mat1, Mat4_f mat2)
+{
+    Mat4_f result = {0};
+    mat_mul_internal(mat1.elems, mat2.elems, result.elems, 4);
+    return result;
+}
+BIJA_STATIC_INLINE Vec4D_f mat4df_vec_mul(Mat4_f mat, Vec4D_f vec)
+{
+    Mat4_f result_mat = {0};
+    Mat4_f vec2mat = {0};
+
+    vec2mat.elems[0] = vec.x;
+    vec2mat.elems[1] = 0.0f;
+    vec2mat.elems[2] = 0.0f;
+
+    vec2mat.elems[3] = vec.y;
+    vec2mat.elems[4] = 0.0f;
+    vec2mat.elems[5] = 0.0f;
+
+    vec2mat.elems[6] = vec.z;
+    vec2mat.elems[7] = 0.0f;
+    vec2mat.elems[8] = 0.0f;
+
+    vec2mat.elems[6] = vec.w;
+    vec2mat.elems[7] = 0.0f;
+    vec2mat.elems[8] = 0.0f;
+
+    mat_mul_internal(mat.elems, vec2mat.elems, result_mat.elems, 4);
+
+    Vec4D_f result = {0};
+    result.elems[0] = result_mat.elems[0];
+    result.elems[1] = result_mat.elems[3];
+    result.elems[2] = result_mat.elems[6];
+    result.elems[3] = result_mat.elems[9];
+
+    return result;
+}
+BIJA_STATIC_INLINE Mat4_f mat4df_transpose(Mat4_f mat)
+{
+    Mat4_f result = {0};
+    mat_transpose_internal(mat.elems, result.elems, 4);
+    return result;
+}
+
 BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat)
 {
     return mat_det_internal(mat.elems, 2);
@@ -1152,6 +1489,10 @@ BIJA_STATIC_INLINE float mat2df_det(Mat2_f mat)
 BIJA_STATIC_INLINE float mat3df_det(Mat3_f mat)
 {
     return mat_det_internal(mat.elems, 3);
+}
+BIJA_STATIC_INLINE float mat4df_det(Mat4_f mat)
+{
+    return mat_det_internal(mat.elems, 4);
 }
 
 BIJA_STATIC_INLINE int mat2df_equal(Mat2_f mat1, Mat2_f mat2)
@@ -1173,6 +1514,25 @@ BIJA_STATIC_INLINE int mat3df_equal(Mat3_f mat1, Mat3_f mat2)
            float_eq_approx(mat1.elems[7], mat2.elems[7]) &&
            float_eq_approx(mat1.elems[8], mat2.elems[8]);
 }
+BIJA_STATIC_INLINE int mat4df_equal(Mat4_f mat1, Mat4_f mat2)
+{
+    return float_eq_approx(mat1.elems[0], mat2.elems[0]) &&
+           float_eq_approx(mat1.elems[1], mat2.elems[1]) &&
+           float_eq_approx(mat1.elems[2], mat2.elems[2]) &&
+           float_eq_approx(mat1.elems[3], mat2.elems[3]) &&
+           float_eq_approx(mat1.elems[4], mat2.elems[4]) &&
+           float_eq_approx(mat1.elems[5], mat2.elems[5]) &&
+           float_eq_approx(mat1.elems[6], mat2.elems[6]) &&
+           float_eq_approx(mat1.elems[7], mat2.elems[7]) &&
+           float_eq_approx(mat1.elems[8], mat2.elems[8]) &&
+           float_eq_approx(mat1.elems[9], mat2.elems[9]) &&
+           float_eq_approx(mat1.elems[10], mat2.elems[10]) &&
+           float_eq_approx(mat1.elems[11], mat2.elems[11]) &&
+           float_eq_approx(mat1.elems[12], mat2.elems[12]) &&
+           float_eq_approx(mat1.elems[13], mat2.elems[13]) &&
+           float_eq_approx(mat1.elems[14], mat2.elems[14]) &&
+           float_eq_approx(mat1.elems[15], mat2.elems[15]);
+}
 
 BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat)
 {
@@ -1186,21 +1546,27 @@ BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat)
     mat_inverse_internal(mat.elems, result.elems, 3);
     return result;
 }
+BIJA_STATIC_INLINE Mat4_f mat4df_inverse(Mat4_f mat)
+{
+    Mat4_f result = {0};
+    mat_inverse_internal(mat.elems, result.elems, 4);
+    return result;
+}
 #endif // BIJA_IMPLEMENTATION
 
 /* ==== Bija Feature TODO ====*/
 // 1. Implement Quaternions / Rotors.
-// 2. SIMD Implementation.
-// 3. Documentation of every public api functions into a .md file in a /docs/
+// 2. Implement 4 x 4 Matrix.
+// 3. SIMD Implementation.
+// 4. Documentation of every public api functions into a .md file in a /docs/
 //    directory.
 
 /* ==== Bija Bug Fix TODO ====*/
 // 1. Figure out how to properly log pbt tests and benchmarking tests in the
 //    terminal.
 // 2. Look into how to improve float_eq_approx()
+// 3. Incorperate the restrict keyword within the internal functions
+//    to avoid pointer overlapping.
 
 /* ==== Bija Testing TODO ====*/
 // 1. Benchmarking
-// 2. Edit the build-test.sh script to put the pbt_runner executable in a /bin/
-//    directory.
-// 3. Create a way to clean /bin/ directories.

@@ -45,7 +45,7 @@ int main(void)
 Sum Matrix
     6.0   8.0
     10.0  12.0
-Sum Matrix Determinant: -8
+Sum Matrix Determinant: -8.0
 ```
 
 ## PBT Test Build Instructions
