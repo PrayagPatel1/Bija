@@ -72,7 +72,7 @@ extern "C"
     BIJA_FORCE_INLINE int float_eq_approx(float a, float b);
     BIJA_FORCE_INLINE int float_eq_rel(float a, float b);
 
-    /* ==== Layer 2: Core Vector / Matrix Definitions ==== */
+    /* ==== Layer 2: Core Vector / Matrix / Quaternion Definitions ==== */
     typedef union
     {
         struct
@@ -126,8 +126,23 @@ extern "C"
     static_assert(sizeof(Mat4_f) == sizeof(float) * 16, "Mat4_f has unexpected padding bytes");
 
     /* ==== Layer 3: Vector Operations ==== */
+
+    /**
+     * <Name> vec2df_add
+     * <Param> Vec2D_f vec1, Vec2D_f vec2
+     * <Description> Sums two Vec2D_f vectors.
+     * <Return> The sum of two Vec2D_f vectors as a Vec2D_f vector.
+     */
     BIJA_STATIC_INLINE Vec2D_f vec2df_add(Vec2D_f vec1, Vec2D_f vec2);
+
+    /**
+     * <Name> vec2df_sub
+     * <Param> Vec2D_f vec1, Vec2D_f vec2
+     * <Description> Difference two Vec2D_f vectors.
+     * <Return> The difference of two Vec2D_f vectors as a Vec2D_f vector.
+     */
     BIJA_STATIC_INLINE Vec2D_f vec2df_sub(Vec2D_f vec1, Vec2D_f vec2);
+
     BIJA_STATIC_INLINE Vec2D_f vec2df_scale(Vec2D_f vec, float scalar);
     BIJA_STATIC_INLINE float vec2df_dot(Vec2D_f vec1, Vec2D_f vec2);
     BIJA_STATIC_INLINE Vec2D_f vec2df_hadamard_prod(Vec2D_f vec1, Vec2D_f vec2);
@@ -261,6 +276,7 @@ extern "C"
     BIJA_STATIC_INLINE Mat2_f mat2df_inverse(Mat2_f mat);
     BIJA_STATIC_INLINE Mat3_f mat3df_inverse(Mat3_f mat);
     BIJA_STATIC_INLINE Mat4_f mat4df_inverse(Mat4_f mat);
+
 #ifdef __cplusplus
 }
 #endif
@@ -1555,18 +1571,18 @@ BIJA_STATIC_INLINE Mat4_f mat4df_inverse(Mat4_f mat)
 #endif // BIJA_IMPLEMENTATION
 
 /* ==== Bija Feature TODO ====*/
-// 1. Implement Quaternions / Rotors.
-// 2. Implement 4 x 4 Matrix.
+// 1. Implement Quaternions.
 // 3. SIMD Implementation.
 // 4. Documentation of every public api functions into a .md file in a /docs/
 //    directory.
+// 5. Adding specific targets to the CPU or GPU
 
 /* ==== Bija Bug Fix TODO ====*/
 // 1. Figure out how to properly log pbt tests and benchmarking tests in the
 //    terminal.
 // 2. Look into how to improve float_eq_approx()
-// 3. Incorperate the restrict keyword within the internal functions
-//    to avoid pointer overlapping.
 
 /* ==== Bija Testing TODO ====*/
-// 1. Benchmarking
+// 1. Benchmarking.
+// 2. PBT Test Mat4_f.
+// 3. PBT Test Quat_f.
